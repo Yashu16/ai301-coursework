@@ -1,4 +1,4 @@
-# Contribution: [Issue Title]
+# Contribution: Match LLM emphasis words that carry punctuation from the transcript
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -8,10 +8,9 @@ format criteria grade exactly that. Your course repo link is the whole submissio
 files and no evidence uploads are part of Assignment 5.
 
 **Contribution Number:** [1]
-**Student:** [Student name]
-**GitHub Username:** [your GitHub username, exactly as it appears on your profile - no @, no
-profile URL. Your comments upstream are identified by this name.]
-**Issue:** [GitHub issue link]
+**Student:** Yaswanth Kottana
+**GitHub Username:** Yashu16
+**Issue:** https://github.com/blixvip/easyedit/issues/36
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -55,10 +54,9 @@ happened; these entries are the toolkit's own timeline.
 All four entries are graded. Keep every heading below, and fill each
 one in the week it belongs to.
 
-**Unit 5: [one line on the tool work]**
+**Unit 5: Built issue-scout, a search-rank-grade funnel over all of GitHub, and patched it after its first scan**
 
-[2-4 sentences: what you built (the scout, your strategy), what broke
-or fell short, what changed because of it.]
+I turned my unit-1 issue-select skill into issue-scout by writing three `gh search issues` queries from my fit profile (AI/ML keywords, plain Python, and Python tooling, all filtered to open, unassigned "good first issue" results) and six ranking filters. Testing the queries by hand first, two of them returned 0 results because I had quoted `"llm OR rag OR ..."` as one phrase; removing the quotes brought each to 100 results. The first scan accepted all five candidates, and that was the problem: my rubric had no check for whether a repo is actually used, so a one-day-old repo with 0 stars passed twice, and my group-by-query ranking let the AI/ML query fill every slot. I added a required "Repo in use" check (fail under 10 stars when the owner opened every recent issue and PR), verified it by hand with gh against four repos, and changed the ranking to take turns across the three queries.
 
 **Unit 6: [one line on the tool work]**
 
@@ -90,6 +88,8 @@ wild search and what you changed or would change, or what convinced
 you it held up. **Record the link to your claim comment in this section too.**
 Not claimed yet? Write `claim pending` and today's date where the link goes,
 and add the link the moment your claim lands.]
+
+**Claim comment:** https://github.com/blixvip/easyedit/issues/36#issuecomment-6714289826 (posted 2026-11-07)
 
 **Toolkit**
 
