@@ -1,4 +1,4 @@
-# Contribution: Match LLM emphasis words that carry punctuation from the transcript
+# Contribution: NVDA Does not Pronounce Completely the last part of the last syllable of the last word or character name After a While Working
 
 Path: `beat-2-contribution/contribution-story.md`
 
@@ -10,7 +10,7 @@ files and no evidence uploads are part of Assignment 5.
 **Contribution Number:** [1]
 **Student:** Yaswanth Kottana
 **GitHub Username:** Yashu16
-**Issue:** https://github.com/blixvip/easyedit/issues/36
+**Issue:** https://github.com/nvaccess/nvda/issues/19286
 **Pull Request:** [GitHub PR link, once opened]
 
 One repository, built across units 5 to 8, telling the whole story of your real
@@ -89,7 +89,7 @@ you it held up. **Record the link to your claim comment in this section too.**
 Not claimed yet? Write `claim pending` and today's date where the link goes,
 and add the link the moment your claim lands.]
 
-**Claim comment:** https://github.com/blixvip/easyedit/issues/36#issuecomment-6714289826 (posted 2026-11-07)
+**Claim comment:** https://github.com/nvaccess/nvda/issues/19286#issuecomment-6717329950 (posted 2026-11-08)
 
 **Toolkit**
 
