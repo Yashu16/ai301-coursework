@@ -62,23 +62,23 @@ I turned my unit-1 issue-select skill into issue-scout by writing three `gh sear
 
 I merged my three voice guide copies into one guide, added Upstream rules for claims, questions and pings, and installed the hook; the wiring test blocked a body-less `gh issue comment`, so I knew the hook fired. Two things broke: `python3` on my machine was only the Windows Store stub, so I pointed the hook at `python`, and the guard could not launch the `claude` CLI from Python on Windows because it is an npm `.cmd` shim, so I patched `check_voice.py` to find it with `shutil.which`. Once it ran, it stopped my first comment on the PR because my question asked two things and offered no guess, which broke my own "one question" rule, and I rewrote it as one yes-or-no question before posting. My claim comment on the issue was posted before the guard existed, so the guard never saw it; I wrote a repo memory file for NVDA (`CLAUDE.local.md`, kept out of git with `.git/info/exclude`) with the PR rules, the exact files my issue touches, and the build and test commands, so each session in that repo starts with them loaded; I have not measured how much that saves yet, and the file's orientation section is my own reading of the code rather than an agent run.
 
-**Unit 7: [one line on the tool work]**
+**Unit 7: Installed the ship-gate and wrote a gate manifest for NVDA, running it on my branch before opening the PR**
 
-[2-4 sentences: the ship-gate and your gate manifest. What it produced
-on your real branch, what fought you, what changed because of it.]
+The ship-gate ran `rununittests`, `runlint`, `runcheckpot` and `runlicensecheck` from my manifest, then my `pr-precheck`, against `whitenoise-volume-setting`. Its first run exited 127 on `runcheckpot.bat`, because the command is a Windows batch file the gate's fresh terminal could not resolve by relative path; I rewrote that manifest row to call it by its full path, the same fix I had already found by hand in Solution Approach's Toolkit block. `pr-precheck` itself stayed a REFUSAL the whole time, since my scope file is still the course's Path Review repo and rejects NVDA as out of scope; I logged that mismatch in this entry rather than forcing a pass, and fell back to checking `pr_draft.md` against NVDA's own PR template by hand, as I already note under Pull Request. Once the repo checks passed, I pushed my branch, set `gh repo set-default nvaccess/nvda`, and opened the draft PR through Claude Code, with the voice guard reading `pr_draft.md` before the command ran.
 
-**Unit 8: [one line on the tool work]**
+**Unit 8: Ran the PR monitor on my open PR and used its draft to answer a reviewer's naming question**
 
-[2-4 sentences: the PR-monitor and your playbook. What it read, what it
-drafted, what you did with the draft.]
+`monitor.py --state` read my PR correctly once I confirmed I was on `whitenoise-volume-setting` with `nvaccess/nvda` set as the default repo; it listed CyrilleB79's comment questioning the "white noise" wording and seanbudd's follow-up citing NVDA's language-choices policy on colorised terms. A full run drafted a reply explaining why "white noise" is the standard acoustic term and not a colorised one, citing the same policy page seanbudd had linked. The draft's reasoning was right but its tone assumed I was the one deciding the terminology question, when a maintainer and a collaborator were still discussing it between themselves; I rewrote it to defer to CyrilleB79's own reply (which made the scientific-meaning argument I would have made) and instead posted a short comment noting I had also added the disable/enable behavior and was keeping the existing name. I did not use its drafted wording verbatim anywhere, since every case so far has been a live maintainer discussion where my own short answer fit the thread better than a longer drafted one.
 
 ---
 
 ## Why I Chose This Issue
 
-My first pick from the Issue Selection site, blixvip/easyedit#36, disappeared on 2026-11-08 when the owner's account and repo were deleted and the project's Discord turned into a crypto scam. I re-picked from the site and checked ten issues by hand with `gh`; eight failed because someone had already claimed them, a PR was already open, or the issue was stale or not a real issue. NVDA #19286 was the one that held up: it is triaged and labelled "good first issue", nobody had claimed it or opened a PR, outsiders get merged (11 of the last 35 merges), and a maintainer, seanbudd, had written the scope in the thread: expose the existing `audio.whiteNoiseVolume` setting in the Audio panel, document it, and document the Realtek fix a user found. I re-graded it with my scout after patching the scope check: it came back reject, but only because my "Not already claimed" check counted my own claim comment as someone else's. Every other required check passed, scope-feasible passed, and the difficulty note was moderate, with the open edge being the 0-100 volume range. Its fit-profile check also failed, since this is a Windows accessibility setting and not AI/ML work. I chose it against that verdict because the reject came from a gap in my rubric, not from the issue, and because the scope is small, bounded and agreed with a maintainer who answers within days. It fits me because it is Python (a wx settings panel, config, tests) and it is a user-facing change someone can use, and I hope to learn how a large project reviews a change from outside: its docs, changelog, translation and lint rules. My scout fell short in three ways on a real search. It rejected my own claim, which I logged as a patch but did not apply. Its AI-policy check looked at two CONTRIBUTING.md paths and passed on silence, so I read NVDA's contributing doc myself. And a second scan for a backup returned nothing usable: the five issues I checked by hand were already claimed, had open PRs, or sat in repos that do not accept outside code, so claim and linked-PR checks belong earlier in the ranking. What convinced me it still helped is that the scope-feasible patch let a real issue with an open edge through, and its difficulty note told me to ask about the open edge.
+My scout's November 7 scan graded and accepted five candidates: maziyarpanahi/openmed#4664, blixvip/easyedit#36, amd/gaia#3461, and devbyghaith/salesbrain-skill#2 and #1. I did not pursue them. OpenMed showed no outside authors among its last 40 merged PRs, so maintainer activity did not give me evidence that outside contributions were being accepted; EasyEdit and its owner's account disappeared on November 8; the Gaia issue came from an audit bot rather than a maintainer; and salesbrain-skill was a one-day-old, 0-star repo with activity only from its owner. Those limitations were missed by my first scout rubric. After EasyEdit disappeared, I re-picked from the Issue Selection site and checked ten issues by hand with `gh`; eight failed because someone had already claimed them, a PR was already open, or the issue was stale or not a real issue. NVDA #19286 was the one that held up: it is triaged and labelled "good first issue", nobody had claimed it or opened a PR, outsiders get merged (11 of the last 35 merges), and a maintainer, seanbudd, had written the scope in the thread: expose the existing `audio.whiteNoiseVolume` setting in the Audio panel, document it, and document the Realtek fix a user found. I re-graded it with my scout after patching the scope check: it came back reject, but only because my "Not already claimed" check counted my own claim comment as someone else's. Every other required check passed, scope-feasible passed, and the difficulty note was moderate, with the open edge being the 0-100 volume range. Its fit-profile check also failed, since this is a Windows accessibility setting and not AI/ML work. I chose it against that verdict because the reject came from a gap in my rubric, not from the issue, and because the scope is small, bounded and agreed with a maintainer who answers within days. It fits me because it is Python (a wx settings panel, config, tests) and it is a user-facing change someone can use, and I hope to learn how a large project reviews a change from outside: its docs, changelog, translation and lint rules. My scout fell short in three ways on a real search. It rejected my own claim, which I logged as a patch but did not apply. Its AI-policy check looked at two CONTRIBUTING.md paths and passed on silence, so I read NVDA's contributing doc myself. And a second scan for a backup returned nothing usable: the five issues I checked by hand were already claimed, had open PRs, or sat in repos that do not accept outside code, so claim and linked-PR checks belong earlier in the ranking. What convinced me it still helped is that the scope-feasible patch let a real issue with an open edge through, and its difficulty note told me to ask about the open edge.
 
 **Claim comment:** https://github.com/nvaccess/nvda/issues/19286#issuecomment-6717329950 (posted 2026-11-08)
+
+My posted claim did not include a report-back date. I will report back by 22 Nov 2026, with a voice-guard-checked follow-up.
 
 **Toolkit**
 
@@ -163,25 +163,27 @@ What I am reproducing: the issue asks, after the maintainer's comments, for the 
 
 **Analysis**
 
-The clipped speech comes from the user's audio driver trimming silence, which NVDA cannot fix, as the maintainer says in the thread. The part NVDA can fix is that its own workaround is hidden: `whiteNoiseVolume` is defined in `configSpec.py` and used in `nvwave.py` (`wasSilence_playFor(..., whiteNoiseVolume / 100.0)`), but `AudioPanel` in `settingsDialogs.py` never creates a control for it, so there is nothing for a user to reach.
+The reproduction isolates the missing user control, not the speech clipping itself. `whiteNoiseVolume` is defined in `configSpec.py` and used in `nvwave.py` (`wasSilence_playFor(..., whiteNoiseVolume / 100.0)`), but `AudioPanel` in `settingsDialogs.py` never creates a control for it. The maintainer attributes clipping to audio drivers trimming silence, but I have not independently reproduced that symptom; this plan exposes the existing workaround without claiming it fixes the clipping.
 
 **Proposed Solution**
 
 Add a spin control to `AudioPanel` right after the awake-time control, built the same way (`SelectOnFocusSpinCtrl`, min and max read from the config spec, a help binding), and save its value in `onSave`. Document it in the User Guide with the Realtek audio enhancements tip, and add a changes entry. I am deliberately not changing how the white noise is played, the default (0, off), or anything in `nvwave.py`, and I am not claiming it fixes the clipped speech.
+
+Release timing is still an open question because NVDA's 2027.1 changes file notes a feature freeze. Keep the PR in draft until a maintainer confirms whether this change can target 2027.1.
 
 **Implementation Plan**
 
 1. `source/gui/settingsDialogs.py`: add `whiteNoiseVolumeEdit` after `audioAwakeTimeEdit` and save it in `onSave`.
 2. `user_docs/en/userGuide.md`: add a "White noise volume" section with the anchor `{#WhiteNoiseVolume}` so F1 on the control opens it.
 3. `user_docs/en/changes.md`: one entry under "Changes".
-4. `tests/unit/test_audioSettingsPanel.py`: three tests for the control.
+4. `tests/unit/test_audioSettingsPanel.py`: three tests for the default value, config range, and saving. Re-run the reproduction on the baseline and this branch, recording that the control is absent before the change and present after it.
 
 Deviations: my first label was "White noise volume (0 to disable):", and I changed it to "(set to 0 to disable)" because it could be read as a range. The lint step wrapped two long lines, and NVDA's autofix bot then added a trailing comma to each, which I copied into my commit. I rebased onto the newest upstream master before opening the PR.
 
 **Toolkit**
 
 - Tool: Claude Code, which wrote the control, the docs, the changes entry and the tests; I read the diff, ran NVDA from source, and committed and pushed it myself.
-- What it produced: a 17-line change in `AudioPanel`, a 17-line User Guide section, a changes line and a 63-line test file.
+- What it produced: a 17-line change in `AudioPanel`, a 17-line User Guide section, a changes line and a 63-line test file, followed by a second small commit after review (binding the awake-time control's spin event to enable/disable the white noise control, and 3 added tests) that fixes the control's enabled state rather than adding a feature.
 - Difficulties: F1 on the control said "no user guide found" until I built the docs with `scons user_docs`, because running from source has no generated `userGuide.html`; it was not a bug in my anchor.
 - What changed: I rebuilt the docs, retested F1, and confirmed the generated HTML contains `WhiteNoiseVolume`.
 
@@ -189,9 +191,11 @@ Deviations: my first label was "White noise volume (0 to disable):", and I chang
 
 ## Testing Strategy
 
-Before and after, in the same environment: on upstream commit 7b58df9, Settings > Audio ends with "Time to keep audio device awake after speech (seconds)" and nothing after it. On my branch, the same panel shows "White noise volume (set to 0 to disable):" after it, with value 0. I also checked by hand that a value I set and saved was still there when I reopened the panel, that Alt+W focuses the control, that the label and value are spoken when I tab to it, and that F1 opens the new User Guide section.
+Before and after, in the same environment: on upstream commit 7b58df9, Settings > Audio ends with "Time to keep audio device awake after speech (seconds)" and nothing after it. On my branch, the same panel shows the white noise volume control after it. I also checked by hand that a value I set and saved was still there when I reopened the panel, that Alt+W focuses the control, that the label and value are spoken when I tab to it, that F1 opens the new User Guide section, and, after CyrilleB79's review, that the control disables whenever the awake-time value is 0 and re-enables immediately when I change that value with the keyboard or spin arrows.
 
-Automated checks, from NVDA's own commands: `rununittests` ran 1529 tests and passed (5 skipped), including three new tests in `tests/unit/test_audioSettingsPanel.py` (the control shows the saved value, its range matches the config spec, and saving writes the value to the config); all three fail without my change. `runlint` (ruff and pyright), `runcheckpot` (my label has its translator comment) and `runlicensecheck` all pass. The same checks, 48 of 48, passed on a practice PR in my fork. NVDA's CI on the real PR is waiting for NV Access to approve the first run.
+Automated checks, from NVDA's own commands: `rununittests` passed with zero failures or errors across the full suite. `tests/unit/test_audioSettingsPanel.py` currently has 6 tests, which together are the complete coverage for this control: 3 from my original commit (the control shows the saved value, its range matches the config spec, and saving writes the value to the config) and 3 added for CyrilleB79's review (the control is disabled on open when awake time is 0, enabled on open when it is above 0, and toggles live when awake time changes). The 3 original tests pass regardless of the disable/enable code, since they test the value/range/save behavior the disable/enable change did not touch; the 3 new tests fail without that change and pass with it, which is what confirms the fix. `runlint` (ruff and pyright), `runcheckpot` (my label has its translator comment) and `runlicensecheck` all pass. The same checks, 48 of 48, passed on a practice PR in my fork. NVDA's CI on the real PR is waiting for NV Access to approve the first run.
+
+The disable/enable behavior is not a new feature: the control already existed and already had no effect when awake time was 0, so leaving it always enabled was a gap in the original control, not an added capability. This round's tests and manual checks confirm that gap is closed, not that a new feature works.
 
 Not tested: whether the white noise stops clipped speech on affected hardware, braille display output, or end-to-end system tests.
 
@@ -231,14 +235,17 @@ F1 said "no user guide found" until I built the docs. Added unit tests, ran lint
 
 **PR Link:** https://github.com/nvaccess/nvda/pull/21131 (draft, opened 2026-11-10)
 
-**PR Description:** "Add White noise volume setting to the Audio settings panel" follows NVDA's template: it links `Closes #19286`, summarizes the missing control, lists the user-facing change (the new control, the User Guide section with the Realtek tip, the changes entry), says there are no developer-facing changes, describes the approach and testing, states that I used an AI assistant and reviewed and tested the change myself, and lists known issues (no controlled test on affected hardware, the 2027.1 feature-freeze question, no live preview of the volume).
+**PR Description:** "Add White noise volume setting to the Audio settings panel" follows NVDA's template: it links `Closes #19286`, summarizes the missing control, lists the user-facing change (the new control, the User Guide section with the Realtek tip, the changes entry), notes the control disables whenever the awake-time value is 0 (since white noise has no effect then) and toggles live as that value changes, says there are no developer-facing changes beyond the new test file, describes the approach (the control follows the existing awake-time control's pattern, and that control's spin event is now also bound to enable/disable the white noise control), lists testing (6 unit tests covering the control's value, range, save, and its disabled/enabled/live-toggle states, plus manual testing and the repo's lint/test/pot/license checks), states that I used an AI assistant and reviewed and tested the change myself, and lists known issues (no controlled test on affected hardware, no live preview of the volume). The disable/enable behavior is a correctness fix to the control's existing enabled state, not a new feature: without it, the control was always editable even when the awake-time value was 0, where it has no effect.
 
 **Maintainer Feedback:**
 
 - 2026-11-08: seanbudd confirmed the scope ("That would be great, thank you") and pointed me to the AI policy and contributing guidelines.
-- 2026-11-10: I opened the draft PR and commented on the issue with the link and a question about whether the changes entry belongs under "Changes" for 2027.1. No reply yet, and NVDA's CI is waiting for NV Access to approve the first run.
+- 2026-11-10: I opened the draft PR and commented on the issue with the link and a question about whether the changes entry belongs under "Changes" for 2027.1. No reply yet at this point, and NVDA's CI was waiting for NV Access to approve the first run.
+- 2026-11-11: CyrilleB79 reviewed and commented that "white noise" is not a well-known term and asked for a better wording if anyone had one.
+- 2026-11-11 to 2026-11-12: I suggested "static noise" as an alternative; seanbudd said either was fine but flagged NVDA's language-choices policy on colorised terms, and asked CyrilleB79 for their read. CyrilleB79 replied that "white noise" is the scientific name for the noise's spectral content, not a colorised/discriminatory term, and does not need to change.
+- 2026-11-12: I added the disable/enable behavior (the control now disables whenever awake time is 0, and toggles live) and commented that I was keeping "white noise" as the name, since it is common among English speakers and the discussion above had settled on keeping it.
 
-**Status:** Awaiting review (draft).
+**Status:** Iterating (responded to review feedback with the disable/enable change; PR remains in draft, naming settled, no further requested changes outstanding as of 2026-11-14).
 
 **Toolkit**
 
@@ -253,16 +260,15 @@ F1 said "no user guide found" until I built the docs. Added unit tests, ran lint
 
 **Technical Skills Gained**
 
-[What you learned technically, named concretely.]
+I learned to build and run NVDA from source on Windows (uv's `python-preference = "only-system"` pin, `scons source`, the Visual Studio `.vsconfig` components) and to extend a wxPython settings panel the way NVDA structures one: a spin control built the same way as its neighbor, bound to `wx.EVT_SPINCTRL`, saved in `onSave`, with a translator comment on its label and an anchor in the generated User Guide for F1 help. I also learned NVDA's own test/lint/pot/license pipeline (`rununittests`, `runlint`, `runcheckpot`, `runlicensecheck`) and how to write a unit test that fails without a change and passes with it, which is what let me show CyrilleB79's requested fix was real rather than asserted.
 
 **Challenges Overcome**
 
-[What was hard and how you solved it; point at the real events, the
-Toolkit blocks above are full of them.]
+Most of the real difficulty was environment setup, not the code change itself: `uv sync` rejecting my Python version, `scons.bat` not resolving from Git Bash, and missing Visual Studio components, all logged in Implementation Notes and Reproduction Process. The harder judgment call came after CyrilleB79's review: "white noise" is not a well-known term, and seanbudd raised NVDA's language-choices policy on colorised terms before the naming question was settled by CyrilleB79's own explanation that "white noise" describes the noise's spectral content and is not a colorised metaphor. Separately, once I added the disable/enable behavior, I had to resist describing it as a new feature in the PR description and story; a maintainer-requested fix to an existing control's enabled state is a correctness fix, not an addition, and keeping that distinction accurate took re-wording the testing section twice.
 
 **What I'd Do Differently Next Time**
 
-[Reflection on your process.]
+I would patch my `pr-precheck` scope file to accept a real upstream repo before I need it mid-project, instead of discovering at the ship-gate step that it only recognizes the course's Path Review repo; I logged the mismatch rather than fixing it, which left me checking my PR description by hand against NVDA's template instead of through the tool built for it. I would also write the disable/enable tests as soon as I noticed the control's always-enabled state looked wrong, rather than waiting for a reviewer to name it, since the gap was visible in my own first reproduction screenshot.
 
 ---
 
